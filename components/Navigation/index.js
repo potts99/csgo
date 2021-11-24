@@ -11,20 +11,7 @@ import {
   XIcon,
 } from "@heroicons/react/outline";
 // import { SearchIcon } from "@heroicons/react/solid";
-
-const navigation = [
-  { name: "Home", href: "#", icon: HomeIcon, current: true },
-  { name: "Inbox", href: "#", icon: UsersIcon, current: false },
-  { name: "Squad", href: "#", icon: FolderIcon, current: false },
-  { name: "Team Info", href: "#", icon: CalendarIcon, current: false },
-  { name: "Transfers", href: "#", icon: InboxIcon, current: false },
-  { name: "Stats", href: "#", icon: ChartBarIcon, current: false },
-];
-const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
-];
+import { useRouter } from 'next/router'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -32,6 +19,16 @@ function classNames(...classes) {
 
 export default function Navigation({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const router = useRouter()
+
+  const navigation = [
+    { name: "Home", href: "/", icon: HomeIcon, current: router.pathname === '/' ? true : false },
+    { name: "Inbox", href: "/inbox", icon: InboxIcon, current: false },
+    { name: "Squad", href: "/squad", icon: FolderIcon, current: router.pathname === '/squad' ? true : false },
+    // { name: "Team Info", href: "#", icon: CalendarIcon, current: false },
+    // { name: "Transfers", href: "#", icon: InboxIcon, current: false },
+    // { name: "Stats", href: "#", icon: ChartBarIcon, current: false },
+  ];
 
   return (
     <>
