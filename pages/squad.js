@@ -1,15 +1,5 @@
 import { useQuery } from "react-query";
 
-const people = [
-  {
-    name: "Jane Cooper",
-    title: "Regional Paradigm Technician",
-    role: "Admin",
-    email: "jane.cooper@example.com",
-  },
-  // More people...
-];
-
 const fetchTeam = async () => {
   const res = await fetch("/api/team/astralis/info");
   return res.json();
@@ -24,6 +14,11 @@ export default function SquadView() {
     <div className="flex flex-col">
       <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+            {status === 'loading' && (
+                <div>
+                    Loadding ...
+                </div>
+            )}
           {status === "success" && (
             <div>
               <div
