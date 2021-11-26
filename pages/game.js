@@ -1,6 +1,14 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { indexOf, remove } from "lodash";
+import { remove, findIndex } from "lodash";
+
+// Introduce player man advantage to weight system 
+
+// Add each round to global Rounds State
+// round info -> who killed who -> player stats
+
+// Round Array struc
+// Each index will hold round_number -> round_events in order -> round stats e.g k/d
 
 export default function game() {
   async function game() {
@@ -22,91 +30,82 @@ export default function game() {
   const [b, setB] = useState(0);
   const [live, setLive] = useState(true);
   const [rounds, setRounds] = useState([]);
+  const [match, setMatch] = useState() // Holds Match stats such as player k/d
 
   const { data, status } = useQuery("game", game);
+
 
   async function playRound() {
     const m_team = [...data.m_t.players];
     const o_team = [...data.o_t.players];
 
-    console.log(m_team)
+    let m_team_stats = [...m_team];
+    let o_team_stats = [...o_team];
 
     if (a > 15 || b > 15) {
       console.log("Game over");
       setLive(false);
     } else {
-      // Adds a basic weight to each player
-      m_team.forEach((element) => {
-        const stats = element.stats;
-
-        let total =
-          stats.rifle +
-          stats.awp +
-          stats.leadership +
-          stats.tactics +
-          stats.flair +
-          stats.mentality +
-          stats.teamwork +
-          stats.workrate +
-          stats.composure +
-          stats.aggression +
-          stats.utilty;
-        total = (total / element.morale) * 10;
-
-        element.stats = { ...stats, weight: Math.round(total) };
-      });
-
-      o_team.forEach((element) => {
-        const stats = element.stats;
-
-        let total =
-          stats.rifle +
-          stats.awp +
-          stats.leadership +
-          stats.tactics +
-          stats.flair +
-          stats.mentality +
-          stats.teamwork +
-          stats.workrate +
-          stats.composure +
-          stats.aggression +
-          stats.utilty;
-        total = (total / element.morale) * 10;
-
-        element.stats = { ...stats, weight: Math.round(total) };
-      });
-
-      // Create a loop
-      // Pick two players
-      // put both weights in array hat
-      // pick at random
-      // winner gets a kill
-      // loser gets a death and removed from array
-      // Team to lose all players first loses round
-      // winning team + 1 score
-      // Add round details too round array
-
       let active = true;
 
       while (active === true) {
+        // Adds a basic weight to each player
+        m_team.forEach((element) => {
+          const stats = element.stats;
 
-        const a_team = m_team
-        const b_team = o_team
-        
-        console.log(a_team.length, b_team.length);
+          let total =
+            stats.rifle +
+            stats.awp +
+            stats.leadership +
+            stats.tactics +
+            stats.flair +
+            stats.mentality +
+            stats.teamwork +
+            stats.workrate +
+            stats.composure +
+            stats.aggression +
+            stats.utilty;
+          total = (total / element.morale) * 10;
+
+          element.stats = { ...stats, weight: Math.round(total) };
+        });
+
+        o_team.forEach((element) => {
+          const stats = element.stats;
+
+          let total =
+            stats.rifle +
+            stats.awp +
+            stats.leadership +
+            stats.tactics +
+            stats.flair +
+            stats.mentality +
+            stats.teamwork +
+            stats.workrate +
+            stats.composure +
+            stats.aggression +
+            stats.utilty;
+          total = (total / element.morale) * 10;
+
+          element.stats = { ...stats, weight: Math.round(total) };
+        });
+
+        const a_team = m_team;
+        const b_team = o_team;
 
         if (a_team.length === 0 || b_team.length === 0) {
           console.log("round over amingo");
 
-          if(b_team.length === 0) {
-              console.log('you win')
-              setA(a + 1)
+          if (b_team.length === 0) {
+            console.log("you win");
+            setA(a + 1);
+            setRounds([]);
           } else {
-            console.log('you lose')
-            setB(b + 1)
+            console.log("you lose");
+            setB(b + 1);
           }
 
-        break
+          break;
         } else {
           let a_player = a_team[Math.floor(Math.random() * a_team.length)];
           let b_player = b_team[Math.floor(Math.random() * b_team.length)];
@@ -137,12 +136,14 @@ export default function game() {
           if (a_team.some(checkwinner)) {
             const loser = findloser();
 
+            const index = findIndex(o_team_stats, function (o) {
+              return o.ign == loser;
+            });
+            console.log(index);
+
             remove(b_team, function (n) {
               return n.ign === String(loser);
             });
-
-            let k = b_team.length
-            k--
 
             console.log("astralis killed " + String(loser) + " with " + winner);
           } else {
@@ -151,9 +152,6 @@ export default function game() {
             remove(a_team, function (n) {
               return n.ign === String(loser);
             });
-
-            let k = a_team.length
-            k--
 
             console.log("liquid killed " + String(loser) + " with " + winner);
           }
