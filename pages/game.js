@@ -42,25 +42,26 @@ export default function game() {
   React.useEffect(() => {
     if (matchStatus === true) {
       // Game Loop
-      setInterval(() => playGame(), 4000);
-    } 
+      setInterval(() => playRound(), 4000);
+    } else {
+      return null
+    }
   }, [matchStatus])
 
-  function playGame() {
+  console.log(match)
+
+  function playRound() {
     const a_team = [...data.m_t.players];
     const b_team = [...data.o_t.players];
 
     let m_team_stats = [...a_team];
     let o_team_stats = [...b_team];
 
-    console.log(a_team, m_team_stats);
-
     if (match.a_score > 15 || match.b_score > 15) {
       console.log("Game over");
       setLive(false);
       setMatchStatus(false);
     } else {
-
       while (live === true) {
         // Adds a basic weight to each player
         a_team.forEach((element) => {
@@ -106,8 +107,6 @@ export default function game() {
         console.log(a_team.length, b_team.length);
 
         if (a_team.length === 0 || b_team.length === 0) {
-          console.log("round over amingo");
-
           if (b_team.length === 0) {
             console.log("astralis win");
             setMatch({
@@ -117,8 +116,6 @@ export default function game() {
               a_team_stats: m_team_stats,
               b_team_stats: o_team_stats,
             });
-
-            break;
           } else {
             setMatch({
               ...match,
@@ -127,9 +124,9 @@ export default function game() {
               a_team_stats: m_team_stats,
               b_team_stats: o_team_stats,
             });
-
-            break;
           }
+
+           break
         } else {
           let a_player = a_team[Math.floor(Math.random() * a_team.length)];
           let b_player = b_team[Math.floor(Math.random() * b_team.length)];
@@ -239,7 +236,10 @@ export default function game() {
               <button
                 className={matchStatus ? "" : "hidden"}
                 disabled={live === false ? true : false}
-                onClick={() => setMatchStatus(false)}
+                onClick={() => {
+                  setMatchStatus(false)
+                  setLive(false)
+                }}
               >
                 Pause
               </button>
@@ -248,7 +248,7 @@ export default function game() {
             <div>
               <button
                 disabled={live === false ? true : false}
-                onClick={() => playGame()}
+                onClick={() => playRound()}
               >
                 Play Round
               </button>
