@@ -126,7 +126,7 @@ export default function Navigation({ children }) {
         </Transition.Root>
 
         {/* Static sidebar for desktop */}
-        <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
+        <div className="hidden md:flex md:w-48 md:flex-col md:fixed md:inset-y-0">
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex-1 flex flex-col min-h-0 bg-gray-800">
             <div className="flex items-center h-16 flex-shrink-0 px-4 bg-gray-900">
@@ -165,7 +165,7 @@ export default function Navigation({ children }) {
             </div>
           </div>
         </div>
-        <div className="md:pl-64 flex flex-col">
+        <div className="md:pl-48 flex flex-col">
           <div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white shadow">
             <button
               type="button"
@@ -176,7 +176,7 @@ export default function Navigation({ children }) {
               <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
             </button>
             <div className="flex-1 px-4 flex justify-between">
-              <div className="flex-1 flex space-x-8">
+              <div className="hidden sm:flex flex-1  space-x-8">
                   <img src='/teams/astralis_logo.png' />
                   <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate mt-3">Astralis</h2>
                 {/* <form className="w-full flex md:ml-0" action="#" method="GET">
