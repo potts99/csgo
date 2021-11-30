@@ -39,6 +39,8 @@ export default function game() {
 
   const { data, status } = useQuery("game", game);
 
+  console.log(data)
+
   React.useEffect(() => {
     if (matchStatus === true) {
       // Game Loop

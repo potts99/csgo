@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
   HomeIcon,
@@ -24,6 +24,7 @@ async function gamestate() {
 
 export default function Navigation({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [matchDay, setMatchDay] = useState(false);
   const router = useRouter();
   const { data, status, refetch } = useQuery("gamestate", gamestate);
 
@@ -52,6 +53,27 @@ export default function Navigation({ children }) {
     // { name: "Transfers", href: "#", icon: InboxIcon, current: false },
     // { name: "Stats", href: "#", icon: ChartBarIcon, current: false },
   ];
+
+  console.log(matchDay);
+
+  React.useEffect(() => {
+    if (data) {
+      const t = data.state.fixtures;
+      t.filter(function (e) {
+        console.log();
+        if (
+          format(parseISO(e.date), "dd/MM/yyyy") ===
+          format(parseISO(data.state.gamestate.current_date), "dd/MM/yyyy")
+        ) {
+          console.log("matchDay");
+          return setMatchDay(true);
+        } else {
+          console.log("no match");
+          return setMatchDay(false);
+        }
+      });
+    }
+  }, [data]);
 
   async function nextDay() {
     await fetch(`/api/loop/next-day`, {
@@ -258,9 +280,24 @@ export default function Navigation({ children }) {
                   <button
                     onClick={() => nextDay()}
                     type="button"
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    className={
+                      matchDay
+                        ? "hidden"
+                        : "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    }
                   >
                     Next Day
+                  </button>
+                  <button
+                    onClick={() => nextDay()}
+                    type="button"
+                    className={
+                      matchDay
+                        ? "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-green-600 "
+                        : "hidden"
+                    }
+                  >
+                    Game Day
                   </button>
                   {/* <button
                   type="button"
