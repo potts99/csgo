@@ -10,13 +10,15 @@ import {
 // import { SearchIcon } from "@heroicons/react/solid";
 import { useRouter } from "next/router";
 import { useQuery } from "react-query";
+import { format } from "date-fns";
+import parseISO from "date-fns/parseISO";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 async function gamestate() {
-  const res = await fetch("/api/loop/gamestate");
+  const res = await fetch(`/api/loop/gamestate`);
   return res.json();
 }
 
@@ -52,12 +54,20 @@ export default function Navigation({ children }) {
   ];
 
   async function nextDay() {
-    await fetch('/api/loop/next-day')
-    .then(res => res.json())
-    .then((res) => {
-      console.log(res)
-      refetch()
+    await fetch(`/api/loop/next-day`, {
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        current_date: data.state.gamestate.current_date,
+      }),
     })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        refetch();
+      });
   }
 
   return (
@@ -214,7 +224,7 @@ export default function Navigation({ children }) {
                 <div className="hidden sm:flex flex-1  space-x-8">
                   <img src="/teams/astralis_logo.png" />
                   <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate mt-3">
-                  {data.state.gamestate.manager_team}
+                    {data.state.gamestate.manager_team}
                   </h2>
                   {/* <form className="w-full flex md:ml-0" action="#" method="GET">
                   <label htmlFor="search-field" className="sr-only">
@@ -240,10 +250,13 @@ export default function Navigation({ children }) {
                     disabled
                     className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-gray-600 "
                   >
-                    {data.state.gamestate.current_date} {data.state.gamestate.year}
+                    {format(
+                      parseISO(data.state.gamestate.current_date),
+                      "dd/MM/yyyy"
+                    )}
                   </span>
                   <button
-                  onClick={() => nextDay()}
+                    onClick={() => nextDay()}
                     type="button"
                     className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
