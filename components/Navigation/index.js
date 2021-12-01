@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { useQuery } from "react-query";
 import { format } from "date-fns";
 import parseISO from "date-fns/parseISO";
+import Link from 'next/link'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -280,6 +281,7 @@ export default function Navigation({ children }) {
                   <button
                     onClick={() => nextDay()}
                     type="button"
+                    disabled={matchDay}
                     className={
                       matchDay
                         ? "hidden"
@@ -288,17 +290,18 @@ export default function Navigation({ children }) {
                   >
                     Next Day
                   </button>
-                  <button
-                    onClick={() => nextDay()}
-                    type="button"
-                    className={
-                      matchDay
-                        ? "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-green-600 "
-                        : "hidden"
-                    }
-                  >
-                    Game Day
-                  </button>
+                  <Link href='/game'>
+                    <button
+                      type="button"
+                      className={
+                        matchDay
+                          ? "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-green-600 "
+                          : "hidden"
+                      }
+                    >
+                      Game Day
+                    </button>
+                  </Link>
                   {/* <button
                   type="button"
                   className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"

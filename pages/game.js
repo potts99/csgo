@@ -2,30 +2,12 @@ import React, { useState } from "react";
 import { useQuery } from "react-query";
 import _, { remove, findIndex, set, update } from "lodash";
 
-// Introduce player man advantage to weight system
-
-// Add each round to global Rounds State
-// round info -> who killed who -> player stats
-
-// Round Array struc
-// Each index will hold round_number -> round_events in order -> round stats e.g k/d
+async function gameInfo() {
+  const res = await fetch("/api/game/info");
+  return res.json();
+}
 
 export default function game() {
-  async function game() {
-    const res = await fetch("/api/game/info", {
-      method: "post",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        date: "02 JAN",
-        managers_team: "astralis",
-        opp_team: "liquid",
-      }),
-    });
-    return res.json();
-  }
-
   const [live, setLive] = useState(true);
   const [rounds, setRounds] = useState([]);
   const [matchStatus, setMatchStatus] = useState(false);
@@ -37,24 +19,24 @@ export default function game() {
     b_team_stats: [],
   });
 
-  const { data, status } = useQuery("game", game);
+  const { data, status } = useQuery("game", gameInfo);
 
-  console.log(data)
+  console.log(data);
 
   React.useEffect(() => {
     if (matchStatus === true) {
       // Game Loop
       setInterval(() => playRound(), 4000);
     } else {
-      return null
+      return null;
     }
-  }, [matchStatus])
+  }, [matchStatus]);
 
-  console.log(match)
+  console.log(match);
 
   function playRound() {
-    const a_team = [...data.m_t.players];
-    const b_team = [...data.o_t.players];
+    const a_team = [...data.player_team.players];
+    const b_team = [...data.opponent.players];
 
     let m_team_stats = [...a_team];
     let o_team_stats = [...b_team];
@@ -128,7 +110,7 @@ export default function game() {
             });
           }
 
-           break
+          break;
         } else {
           let a_player = a_team[Math.floor(Math.random() * a_team.length)];
           let b_player = b_team[Math.floor(Math.random() * b_team.length)];
@@ -167,8 +149,12 @@ export default function game() {
               return m.ign == win;
             });
 
-            const prevdeaths =  (o_team_stats[index].deaths) ? o_team_stats[index].deaths : 0;
-            const prevkills = (m_team_stats[winner].kills) ? m_team_stats[winner].kills : 0;
+            const prevdeaths = o_team_stats[index].deaths
+              ? o_team_stats[index].deaths
+              : 0;
+            const prevkills = m_team_stats[winner].kills
+              ? m_team_stats[winner].kills
+              : 0;
 
             set(o_team_stats[index], "deaths", prevdeaths + 1);
             set(m_team_stats[winner], "kills", prevkills + 1);
@@ -189,11 +175,15 @@ export default function game() {
               return w.ign == win;
             });
 
-            const prevdeaths = (m_team_stats[index].deaths) ? m_team_stats[index].deaths : 0;
-            const prevkills = (o_team_stats[winner].kills) ? o_team_stats[winner].kills : 0;
+            const prevdeaths = m_team_stats[index].deaths
+              ? m_team_stats[index].deaths
+              : 0;
+            const prevkills = o_team_stats[winner].kills
+              ? o_team_stats[winner].kills
+              : 0;
 
-            m_team_stats[index].deaths = prevdeaths + 1
-            o_team_stats[winner].kills = prevkills + 1
+            m_team_stats[index].deaths = prevdeaths + 1;
+            o_team_stats[winner].kills = prevkills + 1;
 
             remove(a_team, function (a) {
               return a.ign === String(loser);
@@ -216,13 +206,13 @@ export default function game() {
         <div className="flex-col">
           <div className="flex justify-center">
             <div className="bg-gray-400 flex flex-row space-x-8">
-              <div>{data.m_t.team_name}</div>
+              <div>{data.player_team.team_name}</div>
               <div className="flex flex-col">
                 <p>02 Jan</p>
                 <p>Test B01</p>
                 <p>{live === true ? "Live" : "Match Over"}</p>
               </div>
-              <div>{data.o_t.team_name}</div>
+              <div>{data.opponent.team_name}</div>
             </div>
           </div>
 
@@ -239,8 +229,8 @@ export default function game() {
                 className={matchStatus ? "" : "hidden"}
                 disabled={live === false ? true : false}
                 onClick={() => {
-                  setMatchStatus(false)
-                  setLive(false)
+                  setMatchStatus(false);
+                  setLive(false);
                 }}
               >
                 Pause
@@ -259,7 +249,7 @@ export default function game() {
 
           <div className="grid grid-cols-3 gap-12  mt-32">
             <div className="space-y-4 w-full p-8">
-              {data.m_t.players.map((player) => {
+              {data.player_team.players.map((player) => {
                 return (
                   <div className="space-y-4 border w-full">
                     <div className="p-4 flex-col">
@@ -288,7 +278,7 @@ export default function game() {
                           scope="col"
                           className="px-4 ml-2 p-0 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                         >
-                          {data.m_t.team_name}
+                          {data.player_team.team_name}
                         </th>
                         <th
                           scope="col"
@@ -333,7 +323,7 @@ export default function game() {
                           scope="col"
                           className="ml-2 p-0 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                         >
-                          {data.o_t.team_name}
+                          {data.opponent.team_name}
                         </th>
                         <th
                           scope="col"
@@ -374,7 +364,7 @@ export default function game() {
             </div>
 
             <div className="space-y-4 w-full p-8">
-              {data.o_t.players.map((player) => {
+              {data.opponent.players.map((player) => {
                 return (
                   <div className="space-y-4 border w-full">
                     <div className="p-4 flex-col">
