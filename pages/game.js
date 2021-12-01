@@ -10,7 +10,6 @@ async function gameInfo() {
 export default function game() {
   const [live, setLive] = useState(true);
   const [rounds, setRounds] = useState([]);
-  const [matchStatus, setMatchStatus] = useState(false);
   const [match, setMatch] = useState({
     round: 0,
     a_score: 0,
@@ -21,18 +20,12 @@ export default function game() {
 
   const { data, status } = useQuery("game", gameInfo);
 
-  console.log(data);
-
   React.useEffect(() => {
-    if (matchStatus === true) {
-      // Game Loop
-      setInterval(() => playRound(), 4000);
-    } else {
-      return null;
+    if (match.a_score > 15 || match.b_score > 15) {
+      console.log("match over");
+      setLive(false);
     }
-  }, [matchStatus]);
-
-  console.log(match);
+  }, [match]);
 
   function playRound() {
     const a_team = [...data.player_team.players];
@@ -41,156 +34,146 @@ export default function game() {
     let m_team_stats = [...a_team];
     let o_team_stats = [...b_team];
 
-    if (match.a_score > 15 || match.b_score > 15) {
-      console.log("Game over");
-      setLive(false);
-      setMatchStatus(false);
-    } else {
-      while (live === true) {
-        // Adds a basic weight to each player
-        a_team.forEach((element) => {
-          const stats = element.stats;
+    while (live === true) {
+      // Adds a basic weight to each player
+      a_team.forEach((element) => {
+        const stats = element.stats;
 
-          let total =
-            stats.rifle +
-            stats.awp +
-            stats.leadership +
-            stats.tactics +
-            stats.flair +
-            stats.mentality +
-            stats.teamwork +
-            stats.workrate +
-            stats.composure +
-            stats.aggression +
-            stats.utilty;
-          total = (total / element.morale) * 10;
+        let total =
+          stats.rifle +
+          stats.awp +
+          stats.leadership +
+          stats.tactics +
+          stats.flair +
+          stats.mentality +
+          stats.teamwork +
+          stats.workrate +
+          stats.composure +
+          stats.aggression +
+          stats.utilty;
+        total = (total / element.morale) * 10;
 
-          element.stats = { ...stats, weight: Math.round(total) };
-        });
+        element.stats = { ...stats, weight: Math.round(total) };
+      });
 
-        b_team.forEach((element) => {
-          const stats = element.stats;
+      b_team.forEach((element) => {
+        const stats = element.stats;
 
-          let total =
-            stats.rifle +
-            stats.awp +
-            stats.leadership +
-            stats.tactics +
-            stats.flair +
-            stats.mentality +
-            stats.teamwork +
-            stats.workrate +
-            stats.composure +
-            stats.aggression +
-            stats.utilty;
-          total = (total / element.morale) * 10;
+        let total =
+          stats.rifle +
+          stats.awp +
+          stats.leadership +
+          stats.tactics +
+          stats.flair +
+          stats.mentality +
+          stats.teamwork +
+          stats.workrate +
+          stats.composure +
+          stats.aggression +
+          stats.utilty;
+        total = (total / element.morale) * 10;
 
-          element.stats = { ...stats, weight: Math.round(total) };
-        });
+        element.stats = { ...stats, weight: Math.round(total) };
+      });
 
-        console.log(a_team.length, b_team.length);
-
-        if (a_team.length === 0 || b_team.length === 0) {
-          if (b_team.length === 0) {
-            console.log("astralis win");
-            setMatch({
-              ...match,
-              round: match.round + 1,
-              a_score: match.a_score + 1,
-              a_team_stats: m_team_stats,
-              b_team_stats: o_team_stats,
-            });
-          } else {
-            setMatch({
-              ...match,
-              round: match.round + 1,
-              b_score: match.b_score + 1,
-              a_team_stats: m_team_stats,
-              b_team_stats: o_team_stats,
-            });
-          }
-
-          break;
+      if (a_team.length === 0 || b_team.length === 0) {
+        if (b_team.length === 0) {
+          setMatch({
+            ...match,
+            round: match.round + 1,
+            a_score: match.a_score + 1,
+            a_team_stats: m_team_stats,
+            b_team_stats: o_team_stats,
+          });
         } else {
-          let a_player = a_team[Math.floor(Math.random() * a_team.length)];
-          let b_player = b_team[Math.floor(Math.random() * b_team.length)];
+          setMatch({
+            ...match,
+            round: match.round + 1,
+            b_score: match.b_score + 1,
+            a_team_stats: m_team_stats,
+            b_team_stats: o_team_stats,
+          });
+        }
+        break;
+      } else {
+        let a_player = a_team[Math.floor(Math.random() * a_team.length)];
+        let b_player = b_team[Math.floor(Math.random() * b_team.length)];
 
-          let hat = [];
+        let hat = [];
 
-          for (let i = 0; i < a_player.stats.weight; i++) {
-            hat.push(a_player.ign);
-          }
+        for (let i = 0; i < a_player.stats.weight; i++) {
+          hat.push(a_player.ign);
+        }
 
-          for (let i = 0; i < b_player.stats.weight; i++) {
-            hat.push(b_player.ign);
-          }
+        for (let i = 0; i < b_player.stats.weight; i++) {
+          hat.push(b_player.ign);
+        }
 
-          const win = hat[Math.floor(Math.random() * hat.length)];
+        const win = hat[Math.floor(Math.random() * hat.length)];
 
-          function findloser() {
-            let h = new Set(hat);
-            let it = h.values();
-            let arr = Array.from(it);
-            return arr.filter(function (value, index, arr) {
-              return value !== win;
-            });
-          }
+        function findloser() {
+          let h = new Set(hat);
+          let it = h.values();
+          let arr = Array.from(it);
+          return arr.filter(function (value, index, arr) {
+            return value !== win;
+          });
+        }
 
-          const checkwinner = (obj) => obj.ign === win;
+        const checkwinner = (obj) => obj.ign === win;
 
-          if (a_team.some(checkwinner)) {
-            const loser = findloser();
+        if (a_team.some(checkwinner)) {
+          const loser = findloser();
 
-            const index = findIndex(o_team_stats, function (o) {
-              return o.ign == loser;
-            });
+          const index = findIndex(o_team_stats, function (o) {
+            return o.ign == loser;
+          });
 
-            const winner = findIndex(m_team_stats, function (m) {
-              return m.ign == win;
-            });
+          const winner = findIndex(m_team_stats, function (m) {
+            return m.ign == win;
+          });
 
-            const prevdeaths = o_team_stats[index].deaths
-              ? o_team_stats[index].deaths
-              : 0;
-            const prevkills = m_team_stats[winner].kills
-              ? m_team_stats[winner].kills
-              : 0;
+          const prevdeaths = o_team_stats[index].deaths
+            ? o_team_stats[index].deaths
+            : 0;
+          const prevkills = m_team_stats[winner].kills
+            ? m_team_stats[winner].kills
+            : 0;
 
-            set(o_team_stats[index], "deaths", prevdeaths + 1);
-            set(m_team_stats[winner], "kills", prevkills + 1);
+          set(o_team_stats[index], "deaths", prevdeaths + 1);
+          set(m_team_stats[winner], "kills", prevkills + 1);
 
-            remove(b_team, function (n) {
-              return n.ign === String(loser);
-            });
+          remove(b_team, function (n) {
+            return n.ign === String(loser);
+          });
 
-            console.log("astralis killed " + String(loser) + " with " + win);
-          } else {
-            const loser = findloser();
+          console.log("astralis killed " + String(loser) + " with " + win);
+        } else {
+          const loser = findloser();
 
-            const index = findIndex(m_team_stats, function (e) {
-              return e.ign == String(loser);
-            });
+          const index = findIndex(m_team_stats, function (e) {
+            return e.ign == String(loser);
+          });
 
-            const winner = findIndex(o_team_stats, function (w) {
-              return w.ign == win;
-            });
+          const winner = findIndex(o_team_stats, function (w) {
+            return w.ign == win;
+          });
 
-            const prevdeaths = m_team_stats[index].deaths
-              ? m_team_stats[index].deaths
-              : 0;
-            const prevkills = o_team_stats[winner].kills
-              ? o_team_stats[winner].kills
-              : 0;
+          const prevdeaths = m_team_stats[index].deaths
+            ? m_team_stats[index].deaths
+            : 0;
+          const prevkills = o_team_stats[winner].kills
+            ? o_team_stats[winner].kills
+            : 0;
 
-            m_team_stats[index].deaths = prevdeaths + 1;
-            o_team_stats[winner].kills = prevkills + 1;
+          m_team_stats[index].deaths = prevdeaths + 1;
+          o_team_stats[winner].kills = prevkills + 1;
 
-            remove(a_team, function (a) {
-              return a.ign === String(loser);
-            });
+          remove(a_team, function (a) {
+            return a.ign === String(loser);
+          });
 
-            console.log("liquid killed " + String(loser) + " with " + win);
-          }
+          console.log("liquid killed " + String(loser) + " with " + win);
         }
       }
     }
@@ -222,26 +205,6 @@ export default function game() {
               </div>
 
               <div className="flex flex-row space-x-4">
-                <div>
-                  <button
-                    className={matchStatus ? "hidden" : ""}
-                    disabled={live === false ? true : false}
-                    onClick={() => setMatchStatus(true)}
-                  >
-                    Play Match
-                  </button>
-                  <button
-                    className={matchStatus ? "" : "hidden"}
-                    disabled={live === false ? true : false}
-                    onClick={() => {
-                      setMatchStatus(false);
-                      setLive(false);
-                    }}
-                  >
-                    Pause
-                  </button>
-                </div>
-
                 <div>
                   <button
                     disabled={live === false ? true : false}
