@@ -55,8 +55,6 @@ export default function Navigation({ children }) {
     // { name: "Stats", href: "#", icon: ChartBarIcon, current: false },
   ];
 
-  console.log(matchDay);
-
   React.useEffect(() => {
     if (data) {
       const t = data.state.fixtures;

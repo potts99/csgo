@@ -202,179 +202,186 @@ export default function game() {
 
       {status === "error" && <div>error</div>}
 
-      {status === "success" && (
-        <div className="flex-col">
-          <div className="flex justify-center">
-            <div className="bg-gray-400 flex flex-row space-x-8">
-              <div>{data.player_team.team_name}</div>
-              <div className="flex flex-col">
-                <p>02 Jan</p>
-                <p>Test B01</p>
-                <p>{live === true ? "Live" : "Match Over"}</p>
-              </div>
-              <div>{data.opponent.team_name}</div>
-            </div>
-          </div>
+      {/* {status === "success" && data.gameDay && <div>{data.message}</div>} */}
 
-          <div className="flex flex-row space-x-4">
-            <div>
-              <button
-                className={matchStatus ? "hidden" : ""}
-                disabled={live === false ? true : false}
-                onClick={() => setMatchStatus(true)}
-              >
-                Play Match
-              </button>
-              <button
-                className={matchStatus ? "" : "hidden"}
-                disabled={live === false ? true : false}
-                onClick={() => {
-                  setMatchStatus(false);
-                  setLive(false);
-                }}
-              >
-                Pause
-              </button>
-            </div>
-
-            <div>
-              <button
-                disabled={live === false ? true : false}
-                onClick={() => playRound()}
-              >
-                Play Round
-              </button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-3 gap-12  mt-32">
-            <div className="space-y-4 w-full p-8">
-              {data.player_team.players.map((player) => {
-                return (
-                  <div className="space-y-4 border w-full">
-                    <div className="p-4 flex-col">
-                      <p>{player.ign}</p>
-                    </div>
+      {status === "success" && data.opponent && (
+        <div>
+          {data.no_game === true && <p>error</p>}
+          {data.player_team && (
+            <div className="flex-col">
+              <div className="flex justify-center">
+                <div className="bg-gray-400 flex flex-row space-x-8">
+                  <div>{data.player_team.team_name}</div>
+                  <div className="flex flex-col">
+                    <p>02 Jan</p>
+                    <p>Test B01</p>
+                    <p>{live === true ? "Live" : "Match Over"}</p>
                   </div>
-                );
-              })}
-            </div>
-
-            <div>
-              <div className="flex flex-col p-2">
-                <div className="w-full h-8 flex flex-row items-center justify-center">
-                  <div className="mr-16">R: {match.round}</div>
-                  <div className="flex flex-row justify-center font-bold text-2xl space-x-4">
-                    <p className="text-blue-500">{match.a_score}</p>
-                    <p>:</p>
-                    <p className="text-yellow-400 ">{match.b_score}</p>
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th
-                          scope="col"
-                          className="px-4 ml-2 p-0 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          {data.player_team.team_name}
-                        </th>
-                        <th
-                          scope="col"
-                          className="text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Kills
-                        </th>
-                        <th
-                          scope="col"
-                          className="text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Deaths
-                        </th>
-
-                        <th scope="col" className="relative px-6 py-3">
-                          <span className="sr-only">Edit</span>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {match.a_team_stats.map((player) => (
-                        <tr key={player.ign}>
-                          <td className="ml-2 p-0 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {player.ign}
-                          </td>
-                          <td className="text-center whitespace-nowrap text-sm font-medium text-gray-900">
-                            {player.kills ? player.kills : 0}
-                          </td>
-                          <td className="text-center whitespace-nowrap text-sm font-medium text-gray-900">
-                            {player.deaths ? player.deaths : 0}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <div className="mt-4">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th
-                          scope="col"
-                          className="ml-2 p-0 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          {data.opponent.team_name}
-                        </th>
-                        <th
-                          scope="col"
-                          className="text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Kills
-                        </th>
-                        <th
-                          scope="col"
-                          className="text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Deaths
-                        </th>
-
-                        <th scope="col" className="relative px-6 py-3">
-                          <span className="sr-only">Edit</span>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {match.b_team_stats.map((player) => (
-                        <tr key={player.ign}>
-                          <td className="ml-2 p-0 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {player.ign}
-                          </td>
-                          <td className="text-center whitespace-nowrap text-sm font-medium text-gray-900">
-                            {player.kills ? player.kills : 0}
-                          </td>
-                          <td className="text-center whitespace-nowrap text-sm font-medium text-gray-900">
-                            {player.deaths ? player.deaths : 0}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                  <div>{data.opponent.team_name}</div>
                 </div>
               </div>
-            </div>
 
-            <div className="space-y-4 w-full p-8">
-              {data.opponent.players.map((player) => {
-                return (
-                  <div className="space-y-4 border w-full">
-                    <div className="p-4 flex-col">
-                      <p>{player.ign}</p>
+              <div className="flex flex-row space-x-4">
+                <div>
+                  <button
+                    className={matchStatus ? "hidden" : ""}
+                    disabled={live === false ? true : false}
+                    onClick={() => setMatchStatus(true)}
+                  >
+                    Play Match
+                  </button>
+                  <button
+                    className={matchStatus ? "" : "hidden"}
+                    disabled={live === false ? true : false}
+                    onClick={() => {
+                      setMatchStatus(false);
+                      setLive(false);
+                    }}
+                  >
+                    Pause
+                  </button>
+                </div>
+
+                <div>
+                  <button
+                    disabled={live === false ? true : false}
+                    onClick={() => playRound()}
+                  >
+                    Play Round
+                  </button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-12  mt-32">
+                <div className="space-y-4 w-full p-8">
+                  {data.player_team.players.map((player) => {
+                    return (
+                      <div className="space-y-4 border w-full">
+                        <div className="p-4 flex-col">
+                          <p>{player.ign}</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div>
+                  <div className="flex flex-col p-2">
+                    <div className="w-full h-8 flex flex-row items-center justify-center">
+                      <div className="mr-16">R: {match.round}</div>
+                      <div className="flex flex-row justify-center font-bold text-2xl space-x-4">
+                        <p className="text-blue-500">{match.a_score}</p>
+                        <p>:</p>
+                        <p className="text-yellow-400 ">{match.b_score}</p>
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                      <table className="min-w-full divide-y divide-gray-200">
+                        <thead className="bg-gray-50">
+                          <tr>
+                            <th
+                              scope="col"
+                              className="px-4 ml-2 p-0 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                              {data.player_team.team_name}
+                            </th>
+                            <th
+                              scope="col"
+                              className="text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                              Kills
+                            </th>
+                            <th
+                              scope="col"
+                              className="text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                              Deaths
+                            </th>
+
+                            <th scope="col" className="relative px-6 py-3">
+                              <span className="sr-only">Edit</span>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-200">
+                          {match.a_team_stats.map((player) => (
+                            <tr key={player.ign}>
+                              <td className="ml-2 p-0 whitespace-nowrap text-sm font-medium text-gray-900">
+                                {player.ign}
+                              </td>
+                              <td className="text-center whitespace-nowrap text-sm font-medium text-gray-900">
+                                {player.kills ? player.kills : 0}
+                              </td>
+                              <td className="text-center whitespace-nowrap text-sm font-medium text-gray-900">
+                                {player.deaths ? player.deaths : 0}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="mt-4">
+                      <table className="min-w-full divide-y divide-gray-200">
+                        <thead className="bg-gray-50">
+                          <tr>
+                            <th
+                              scope="col"
+                              className="ml-2 p-0 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                              {data.opponent.team_name}
+                            </th>
+                            <th
+                              scope="col"
+                              className="text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                              Kills
+                            </th>
+                            <th
+                              scope="col"
+                              className="text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                              Deaths
+                            </th>
+
+                            <th scope="col" className="relative px-6 py-3">
+                              <span className="sr-only">Edit</span>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-200">
+                          {match.b_team_stats.map((player) => (
+                            <tr key={player.ign}>
+                              <td className="ml-2 p-0 whitespace-nowrap text-sm font-medium text-gray-900">
+                                {player.ign}
+                              </td>
+                              <td className="text-center whitespace-nowrap text-sm font-medium text-gray-900">
+                                {player.kills ? player.kills : 0}
+                              </td>
+                              <td className="text-center whitespace-nowrap text-sm font-medium text-gray-900">
+                                {player.deaths ? player.deaths : 0}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
-                );
-              })}
+                </div>
+
+                <div className="space-y-4 w-full p-8">
+                  {data.opponent.players.map((player) => {
+                    return (
+                      <div className="space-y-4 border w-full">
+                        <div className="p-4 flex-col">
+                          <p>{player.ign}</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       )}
     </div>

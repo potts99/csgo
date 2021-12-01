@@ -19,20 +19,21 @@ export default async function matchInfo(req, res) {
       return date === format(state.gamestate.current_date, "dd/MM/yyyy");
     });
 
-    // console.log(fixture)
+    if (fixture.length === 0) {
+      res.status(200).json({ no_game: true })
+    } else {
+      const player_team = await db.collection("teams").findOne({
+        team_name: state.gamestate.manager_team.toLowerCase(),
+      });
 
+      const opponent = await db.collection("teams").findOne({
+        team_name: fixture[0].opponent.toLowerCase(),
+      });
 
-    const player_team = await db.collection('teams').findOne({
-      team_name: state.gamestate.manager_team.toLowerCase()
-    })
+      // console.log(player_team, opponent)
 
-    const opponent = await db.collection('teams').findOne({
-      team_name: fixture[0].opponent.toLowerCase()
-    })
-
-    // console.log(player_team, opponent)
-
-    res.status(200).json({ message: "Game started", player_team, opponent });
+      res.status(200).json({ message: "Game started", player_team, opponent });
+    }
   } catch (error) {
     console.log(error);
     res.status(500).json({ error });
