@@ -22,9 +22,19 @@ export default async function gameover(req, res) {
     });
 
     // Finds fixture played
-    const fixture = days_fixtures.filter(function (e) {
+    days_fixtures.filter(function (e) {
       return e.opponent === opponent_name;
     });
+
+    const winner =
+      match.a_score < match.b_score
+        ? opponent_name
+        : save.gamestate.manager_team;
+
+    const loser =
+      match.a_score > match.b_score
+        ? opponent_name
+        : save.gamestate.manager_team;
 
     const updateFixture = await db.collection("saves").updateOne(
       {
@@ -35,11 +45,15 @@ export default async function gameover(req, res) {
       {
         $set: {
           "fixtures.$.completed": true,
+          "fixtures.$.winner": winner,
+          "fixtures.$.loser": loser,
+          "fixtures.$.m_score": match.a_score,
+          "fixtures.$.o_score": match.b_score,
         },
       }
     );
 
-    console.log(updateFixture);
+    console.log(updateFixture)
 
     res.status(200).json({ message: "Match over & Data Saved", success: true });
   } catch (error) {
