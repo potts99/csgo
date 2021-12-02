@@ -30,9 +30,7 @@ export default async function matchInfo(req, res) {
         team_name: fixture[0].opponent.toLowerCase(),
       });
 
-      // console.log(player_team, opponent)
-
-      res.status(200).json({ message: "Game started", player_team, opponent });
+      res.status(200).json({ message: "Game started", player_team, opponent, gameID: state._id });
     }
   } catch (error) {
     console.log(error);

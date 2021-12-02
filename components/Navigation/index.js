@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { useQuery } from "react-query";
 import { format } from "date-fns";
 import parseISO from "date-fns/parseISO";
-import Link from 'next/link'
+import Link from "next/link";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -59,10 +59,10 @@ export default function Navigation({ children }) {
     if (data) {
       const t = data.state.fixtures;
       t.filter(function (e) {
-        console.log();
         if (
           format(parseISO(e.date), "dd/MM/yyyy") ===
-          format(parseISO(data.state.gamestate.current_date), "dd/MM/yyyy")
+            format(parseISO(data.state.gamestate.current_date), "dd/MM/yyyy") &&
+          e.completed === false
         ) {
           console.log("matchDay");
           return setMatchDay(true);
@@ -277,7 +277,10 @@ export default function Navigation({ children }) {
                     )}
                   </span>
                   <button
-                    onClick={() => nextDay()}
+                    onClick={() => {
+                      router.push("/");
+                      nextDay();
+                    }}
                     type="button"
                     disabled={matchDay}
                     className={
@@ -288,7 +291,7 @@ export default function Navigation({ children }) {
                   >
                     Next Day
                   </button>
-                  <Link href='/game'>
+                  <Link href="/game">
                     <button
                       type="button"
                       className={

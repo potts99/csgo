@@ -12,8 +12,8 @@ export default function game() {
   const [rounds, setRounds] = useState([]);
   const [match, setMatch] = useState({
     round: 0,
-    a_score: 0,
-    b_score: 0,
+    a_score: 15,
+    b_score: 15,
     a_team_stats: [],
     b_team_stats: [],
   });
@@ -24,6 +24,19 @@ export default function game() {
     if (match.a_score > 15 || match.b_score > 15) {
       console.log("match over");
       setLive(false);
+      return fetch("/api/game/gameover", {
+        method: "POST",
+        Headers: {
+          "Content-Type": "application/json",
+          // 'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: JSON.stringify({
+          match,
+          completed: true,
+          id: data.gameID,
+          opponent_name: data.opponent.team_name,
+        }),
+      });
     }
   }, [match]);
 
