@@ -36,7 +36,7 @@ export default async function gameover(req, res) {
         ? opponent_name
         : save.gamestate.manager_team;
 
-    const updateFixture = await db.collection("saves").updateOne(
+    await db.collection("saves").updateOne(
       {
         _id: ObjectID(id),
         "fixtures.date": save.gamestate.current_date,
@@ -52,8 +52,6 @@ export default async function gameover(req, res) {
         },
       }
     );
-
-    console.log(updateFixture)
 
     res.status(200).json({ message: "Match over & Data Saved", success: true });
   } catch (error) {
