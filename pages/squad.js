@@ -1,14 +1,12 @@
 import { useQuery } from "react-query";
 
 const fetchTeam = async () => {
-  const res = await fetch("/api/team/astralis/info");
+  const res = await fetch("/api/team/Astralis/info");
   return res.json();
 };
 
 export default function SquadView() {
   const { data, status } = useQuery("fetchTeam", fetchTeam);
-
-  console.log(status);
 
   return (
     <div className="flex flex-col">
