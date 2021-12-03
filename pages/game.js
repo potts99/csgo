@@ -12,14 +12,15 @@ export default function game() {
   const [rounds, setRounds] = useState([]);
   const [match, setMatch] = useState({
     round: 0,
-    a_score: 15,
-    b_score: 15,
+    a_score: 0,
+    b_score: 0,
     a_team_stats: [],
     b_team_stats: [],
   });
 
   const { data, status } = useQuery("game", gameInfo);
 
+  // Loops over fixtures to see if theres a game on that given day
   React.useEffect(() => {
     if (match.a_score > 15 || match.b_score > 15) {
       console.log("match over");
@@ -232,7 +233,7 @@ export default function game() {
                 <div className="space-y-4 w-full p-8">
                   {data.player_team.players.map((player) => {
                     return (
-                      <div className="space-y-4 border w-full">
+                      <div className="space-y-4 border w-full" key={player.ign}>
                         <div className="p-4 flex-col">
                           <p>{player.ign}</p>
                         </div>
@@ -347,7 +348,7 @@ export default function game() {
                 <div className="space-y-4 w-full p-8">
                   {data.opponent.players.map((player) => {
                     return (
-                      <div className="space-y-4 border w-full">
+                      <div className="space-y-4 border w-full" key={player.ign}>
                         <div className="p-4 flex-col">
                           <p>{player.ign}</p>
                         </div>
