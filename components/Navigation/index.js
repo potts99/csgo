@@ -29,8 +29,6 @@ export default function Navigation({ children }) {
   const router = useRouter();
   const { data, status, refetch } = useQuery("gamestate", gamestate);
 
-  console.log(data);
-
   const navigation = [
     {
       name: "Home",
