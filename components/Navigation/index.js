@@ -50,6 +50,12 @@ export default function Navigation({ children }) {
       icon: UsersIcon,
       current: router.pathname === "/squad" ? true : false,
     },
+    {
+      name: "Calendar",
+      href: "/calendar",
+      icon: UsersIcon,
+      current: router.pathname === "/calendar" ? true : false,
+    },
     // { name: "Team Info", href: "#", icon: CalendarIcon, current: false },
     // { name: "Transfers", href: "#", icon: InboxIcon, current: false },
     // { name: "Stats", href: "#", icon: ChartBarIcon, current: false },
