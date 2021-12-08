@@ -6,6 +6,7 @@ import getDay from "date-fns/getDay";
 import enUS from "date-fns/locale/en-US";
 import { useQuery } from "react-query";
 import React from "react";
+import ArrangeFriendly from "../components/ArrangeFriendly";
 
 const locales = {
   "en-US": enUS,
@@ -47,14 +48,15 @@ export default function CalendarView() {
     }
   }, [data]);
 
-  console.log(event);
-
   return (
     <div>
       {status === "loading" && <div>Loading</div>}
 
       {status === "success" && (
         <div>
+          <div className="py-2">
+            <ArrangeFriendly />
+          </div>
           <Calendar
             localizer={localizer}
             events={event}
