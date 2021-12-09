@@ -1,26 +1,27 @@
 import { QueryClient, QueryClientProvider } from "react-query";
+import { SessionProvider } from "next-auth/react";
+import Navigation from "../components/Navigation";
+import { useRouter } from "next/router";
 
 import "tailwindcss/tailwind.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import Navigation from "../components/Navigation";
-import { useRouter } from "next/router";
 
 // Create a client
 const queryClient = new QueryClient();
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const router = useRouter();
-
-  console.log(router);
 
   if (router.asPath.slice(0, 5) === "/game") {
     return (
       <>
-        <QueryClientProvider client={queryClient}>
-          <Navigation>
-            <Component {...pageProps} />
-          </Navigation>
-        </QueryClientProvider>
+        <SessionProvider session={pageProps.session}>
+          <QueryClientProvider client={queryClient}>
+            <Navigation>
+              <Component {...pageProps} />
+            </Navigation>
+          </QueryClientProvider>
+        </SessionProvider>
       </>
     );
   }
@@ -28,14 +29,18 @@ function MyApp({ Component, pageProps }) {
   if (router.asPath.slice(0, 5) === "/auth") {
     return (
       <>
-        <Component {...pageProps} />
+        <SessionProvider session={pageProps.session}>
+          <Component {...pageProps} />
+        </SessionProvider>
       </>
     );
   }
 
   return (
     <>
-      <Component {...pageProps} />
+      <SessionProvider session={pageProps.session}>
+        <Component {...pageProps} />
+      </SessionProvider>
     </>
   );
 }
