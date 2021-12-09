@@ -16,8 +16,8 @@ export default async function matchInfo(req, res) {
     const fixture = state.fixtures.filter(function (e) {
       const date = format(e.date, "dd/MM/yyyy");
 
-      return date === format(state.gamestate.current_date, "dd/MM/yyyy");
-    });
+      return date === format(state.gamestate.current_date, "dd/MM/yyyy") && e.completed === false ;
+    })
 
     if (fixture.length === 0) {
       res.status(200).json({ no_game: true });

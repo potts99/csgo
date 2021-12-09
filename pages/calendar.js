@@ -31,7 +31,7 @@ export default function CalendarView() {
   const { data, status, refetch } = useQuery("fixtures", fixtures);
 
   React.useEffect(() => {
-    if (data) {
+    if (data && data.fixtures) {
       const t = data.fixtures;
 
       let n = [];
@@ -58,6 +58,7 @@ export default function CalendarView() {
             <ArrangeFriendly />
           </div>
           <Calendar
+            defaultDate={new Date("01/01/2021")}
             localizer={localizer}
             events={event}
             startAccessor="start"

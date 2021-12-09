@@ -7,7 +7,7 @@ export default async function gameover(req, res) {
 
   const { match, id, completed, opponent_name } = JSON.parse(req.body);
 
-  console.log(id, completed, opponent_name);
+  // console.log(match, id, completed, opponent_name);
 
   try {
     // Loads save file
@@ -16,15 +16,17 @@ export default async function gameover(req, res) {
     });
 
     // Loads fixtures for given day
-    const days_fixtures = save.fixtures.filter(function (e) {
-      const date = format(e.date, "dd/MM/yyyy");
-      return date === format(save.gamestate.current_date, "dd/MM/yyyy");
-    });
+    // const days_fixtures = save.fixtures.filter(function (e) {
+    //   const date = format(e.date, "dd/MM/yyyy");
+    //   return date === format(save.gamestate.current_date, "dd/MM/yyyy");
+    // });
 
-    // Finds fixture played
-    days_fixtures.filter(function (e) {
-      return e.opponent === opponent_name;
-    });
+    // // Finds fixture played
+    // const filter = days_fixtures.filter(function (e) {
+    //   return e.opponent === opponent_name;
+    // });
+
+    // console.log(filter, opponent_name)
 
     const winner =
       match.a_score < match.b_score
@@ -36,11 +38,19 @@ export default async function gameover(req, res) {
         ? opponent_name
         : save.gamestate.manager_team;
 
-    await db.collection("saves").updateOne(
+    const test = await db.collection("saves").updateOne(
       {
         _id: ObjectID(id),
-        "fixtures.date": save.gamestate.current_date,
-        "fixtures.opponent": opponent_name,
+        fixtures: {
+          $elemMatch: {
+            opponent: {
+              $eq: opponent_name,
+            },
+            date: {
+              $eq: save.gamestate.current_date,
+            },
+          },
+        },
       },
       {
         $set: {
@@ -51,7 +61,10 @@ export default async function gameover(req, res) {
           "fixtures.$.o_score": match.b_score,
         },
       }
+      // { upsert: true }
     );
+
+    console.log(test);
 
     res.status(200).json({ message: "Match over & Data Saved", success: true });
   } catch (error) {

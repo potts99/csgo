@@ -60,16 +60,12 @@ export default function Navigation({ children }) {
   ];
 
   React.useEffect(() => {
-    if (data) {
+    if (data && data.state.fixtures )  {
       const t = data.state.fixtures;
 
+      console.log(t)
+
       for (let k = 0; k < t.length; k++) {
-        console.log(
-          t[k],
-          format(parseISO(t[k].date), "dd/MM/yyyy"),
-          format(parseISO(data.state.gamestate.current_date), "dd/MM/yyyy"),
-          t[k].completed
-        );
         if (
           format(parseISO(t[k].date), "dd/MM/yyyy") ===
             format(parseISO(data.state.gamestate.current_date), "dd/MM/yyyy") &&
@@ -81,6 +77,8 @@ export default function Navigation({ children }) {
           setMatchDay(false);
         }
       }
+    }  else {
+      return null
     }
   }, [data]);
 
