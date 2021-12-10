@@ -9,10 +9,6 @@ const options = {
   providers: [
     Providers({
       name: "Credentials",
-      credentials: {
-        username: { label: "Username", type: "text", placeholder: "jsmith" },
-        password: { label: "Password", type: "password" },
-      },
       async authorize(credentials, req, res) {
         try {
           const { db } = await connectToDatabase();
@@ -53,7 +49,7 @@ const options = {
     },
     pages: {
       signIn: "/auth/login",
-      newUser: "/auth/signup",
+      newUser: "/auth/register",
     },
     debug: true,
   },
