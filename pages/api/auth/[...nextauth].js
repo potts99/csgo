@@ -5,7 +5,7 @@ import { connectToDatabase } from "../../../lib/mongo";
 import { verifyPassword } from "../../../lib/helpers";
 
 const options = {
-  site: "http://localhost:3000/",
+  site: process.env.NEXTAUTH_UR,
   providers: [
     Providers({
       name: "Credentials",
@@ -39,13 +39,14 @@ const options = {
     jwt: true,
     maxAge: 30 * 24 * 60 * 60,
   },
+  secret: process.env.JWT_SECRET,
   database: process.env.DATABASE_URL,
   callbacks: {
     redirect: async (url, _) => {
       if (url === "/auth/login") {
-        return Promise.resolve("/");
+        return Promise.resolve("/start");
       }
-      return Promise.resolve("/");
+      return Promise.resolve("/start");
     },
     pages: {
       signIn: "/auth/login",

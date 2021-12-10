@@ -39,7 +39,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <>
       <SessionProvider session={pageProps.session}>
-        <Component {...pageProps} />
+        <QueryClientProvider client={queryClient}>
+          <Component {...pageProps} />
+        </QueryClientProvider>
       </SessionProvider>
     </>
   );
