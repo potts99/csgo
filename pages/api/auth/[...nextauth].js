@@ -41,19 +41,19 @@ const options = {
   },
   secret: process.env.JWT_SECRET,
   database: process.env.DATABASE_URL,
-  callbacks: {
-    redirect: async (url, _) => {
-      if (url === "/auth/login") {
-        return Promise.resolve("/start");
-      }
-      return Promise.resolve("/start");
-    },
-    pages: {
-      signIn: "/auth/login",
-      newUser: "/auth/register",
-    },
-    debug: true,
+  pages: {
+    signIn: "/auth/login",
+    newUser: "/auth/register",
   },
+  debug: true,
+  // callbacks: {
+  //   redirect: async (url, _) => {
+  //     if (url === "/auth/login") {
+  //       return Promise.resolve("/start");
+  //     }
+  //     return Promise.resolve("/start");
+  //   },
+  // },
 };
 
 export default (req, res) => NextAuth(req, res, options);
