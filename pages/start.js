@@ -3,11 +3,31 @@
 // click start game which hits the api to generate a save
 import React from "react";
 import { useQuery } from "react-query";
+import { getSession } from "next-auth/react";
 
 async function LoadTeams() {
   const res = await fetch("/api/start/teams");
   return res.json();
 }
+
+export async function getServerSideProps(ctx) {
+  const session = await getSession(ctx);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/auth/login",
+        statusCode: 302,
+      },
+    };
+  }
+
+  return {
+    props: {
+      user: session.user || null,
+    },
+  };
+}
+
 
 export default function Start() {
   const [name, setName] = React.useState("Ted Lasso");
@@ -15,6 +35,24 @@ export default function Start() {
   const [team, setTeam] = React.useState("");
 
   const { data, status } = useQuery("loadteams", LoadTeams);
+
+  async function choose() {
+    setLoading(true);
+    if (!name || !team || name.legnth > 0) {
+      alert("Please select a team or check you have entered a name!");
+    } else {
+      await fetch("/api/start/generate-save", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          team,
+        }),
+      });
+    }
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 mt-16 sm:px-6 md:px-8">
@@ -24,6 +62,15 @@ export default function Start() {
 
       {status === "success" && (
         <div>
+          <div className="float-right">
+            <button
+              onClick={choose}
+              type="button"
+              className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Start Game
+            </button>
+          </div>
           <h1>WELCOME TO CSGO MANAGER</h1>
           <h2>Choose your team wisely</h2>
           <div>
@@ -40,6 +87,7 @@ export default function Start() {
                 id="email"
                 className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
                 placeholder="Ted Lasso"
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
           </div>
@@ -58,7 +106,7 @@ export default function Start() {
                     <img
                       className="h-20 flex-shrink-0 mx-auto rounded-full"
                       src="./teams/astralis_logo.png"
-                      alt=""
+                      alt="Team logo"
                     />
                     <h3 className="mt-6 text-gray-900 text-sm font-medium">
                       {team.team_name}
@@ -73,7 +121,10 @@ export default function Start() {
                   <div>
                     <div className="-mt-px flex divide-x divide-gray-200">
                       <div className="w-0 flex-1 flex">
-                        <button className="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500">
+                        <button
+                          onClick={() => setTeam(team.team_name)}
+                          className="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500"
+                        >
                           <span className="ml-3">Choose</span>
                         </button>
                       </div>
