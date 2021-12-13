@@ -7,6 +7,7 @@ export default async function genSave(req, res) {
 
   const user = session.user.email
 
+
   try {
 
     const teams = await db.collection('teams').find({}).toArray()
@@ -23,9 +24,6 @@ export default async function genSave(req, res) {
         teams: teams,
         players: players
     })
-
-    
-
 
     res.status(200).json({ sucess: true });
   } catch (error) {

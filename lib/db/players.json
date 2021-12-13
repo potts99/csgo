@@ -1,0 +1,102 @@
+[
+  {
+    "ign": "glave",
+    "age": "26",
+    "role": "igl",
+    "language": "danish",
+    "morale": "90",
+    "stats": {
+      "rifle": "15",
+      "awp": "14",
+      "leadership": "19",
+      "tactics": "20",
+      "flair": "9",
+      "mentality": "18",
+      "teamwork": "19",
+      "workrate": "18",
+      "composure": "15",
+      "aggression": "12",
+      "utilty": "17"
+    }
+  },
+  {
+    "ign": "BlameF",
+    "age": "26",
+    "role": "igl",
+    "language": "danish",
+    "morale": "95",
+    "stats": {
+      "rifle": "18",
+      "awp": "13",
+      "leadership": "18",
+      "tactics": "18",
+      "flair": "9",
+      "mentality": "18",
+      "teamwork": "18",
+      "workrate": "15",
+      "composure": "15",
+      "aggression": "16",
+      "utilty": "13"
+    }
+  },
+  {
+    "ign": "Konfig",
+    "age": "26",
+    "role": "igl",
+    "language": "danish",
+    "morale": "99",
+    "stats": {
+      "rifle": "19",
+      "awp": "7",
+      "leadership": "11",
+      "tactics": "8",
+      "flair": "18",
+      "mentality": "18",
+      "teamwork": "15",
+      "workrate": "18",
+      "composure": "15",
+      "aggression": "19",
+      "utilty": "8"
+    }
+  },
+  {
+    "ign": "Xyp9nx",
+    "age": "26",
+    "role": "igl",
+    "language": "danish",
+    "morale": "85",
+    "stats": {
+      "rifle": "15",
+      "awp": "6",
+      "leadership": "15",
+      "tactics": "15",
+      "flair": "7",
+      "mentality": "20",
+      "teamwork": "19",
+      "workrate": "18",
+      "composure": "20",
+      "aggression": "5",
+      "utilty": "19"
+    }
+  },
+  {
+    "ign": "Lucky",
+    "age": "26",
+    "role": "igl",
+    "language": "danish",
+    "morale": "90",
+    "stats": {
+      "rifle": "12",
+      "awp": "13",
+      "leadership": "9",
+      "tactics": "11",
+      "flair": "11",
+      "mentality": "9",
+      "teamwork": "14",
+      "workrate": "14",
+      "composure": "15",
+      "aggression": "12",
+      "utilty": "15"
+    }
+  }
+]
