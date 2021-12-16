@@ -41,6 +41,8 @@ export default function game() {
     }
   }, [match]);
 
+  console.log(data)
+
   function playRound() {
     const a_team = [...data.player_team.players];
     const b_team = [...data.opponent.players];

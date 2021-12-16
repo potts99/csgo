@@ -5,7 +5,7 @@ import { connectToDatabase } from "../../../lib/mongo";
 import { verifyPassword } from "../../../lib/helpers";
 
 const options = {
-  site: process.env.NEXTAUTH_UR,
+  site: process.env.NEXTAUTH_URL,
   providers: [
     Providers({
       name: "Credentials",
@@ -39,7 +39,7 @@ const options = {
     jwt: true,
     maxAge: 30 * 24 * 60 * 60,
   },
-  secret: process.env.JWT_SECRET,
+  secret: 'lXVsKy1aOGTyAgrqdU5JBa8J5Iu+sRdJ1e9LEH++dtM=',
   database: process.env.DATABASE_URL,
   pages: {
     signIn: "/auth/login",
