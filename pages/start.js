@@ -4,6 +4,7 @@
 import React from "react";
 import { useQuery } from "react-query";
 import { getSession } from "next-auth/react";
+import { useRouter } from 'next/router'
 
 async function LoadTeams() {
   const res = await fetch("/api/start/teams");
@@ -28,8 +29,9 @@ export async function getServerSideProps(ctx) {
   };
 }
 
-
 export default function Start() {
+  const router = useRouter()
+
   const [name, setName] = React.useState("Ted Lasso");
   const [loading, setLoading] = React.useState(false);
   const [team, setTeam] = React.useState("");
@@ -50,7 +52,16 @@ export default function Start() {
           name,
           team,
         }),
-      });
+      })
+      .then((res) => res.json())
+      .then((res) => {
+        if(res.sucess === true) {
+          router.push('/game')
+        } else {
+          alert('Error creating new game')
+        }
+      })
+      
     }
   }
 

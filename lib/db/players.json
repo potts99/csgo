@@ -5,6 +5,7 @@
     "role": "igl",
     "language": "danish",
     "morale": "90",
+    "team": "Astralis",
     "stats": {
       "rifle": "15",
       "awp": "14",
@@ -25,6 +26,7 @@
     "role": "igl",
     "language": "danish",
     "morale": "95",
+    "team": "Astralis",
     "stats": {
       "rifle": "18",
       "awp": "13",
@@ -45,6 +47,7 @@
     "role": "igl",
     "language": "danish",
     "morale": "99",
+    "team": "Astralis",
     "stats": {
       "rifle": "19",
       "awp": "7",
@@ -65,6 +68,7 @@
     "role": "igl",
     "language": "danish",
     "morale": "85",
+    "team": "Astralis",
     "stats": {
       "rifle": "15",
       "awp": "6",
@@ -85,6 +89,7 @@
     "role": "igl",
     "language": "danish",
     "morale": "90",
+    "team": "Astralis",
     "stats": {
       "rifle": "12",
       "awp": "13",
@@ -97,6 +102,236 @@
       "composure": "15",
       "aggression": "12",
       "utilty": "15"
+    }
+  },
+  {
+    "ign": "elige",
+    "salary": 200000,
+    "months_left": 48,
+    "age": 26,
+    "role": "entry",
+    "language": "danish",
+    "morale": 90,
+    "team": "Team Liquid",
+    "stats": {
+      "rifle": 15,
+      "awp": 14,
+      "leadership": 19,
+      "tactics": 20,
+      "flair": 9,
+      "mentality": 18,
+      "teamwork": 19,
+      "workrate": 18,
+      "composure": 15,
+      "aggression": 12,
+      "utilty": 17
+    }
+  },
+  {
+    "ign": "Fallen",
+    "salary": 200000,
+    "months_left": 48,
+    "age": 26,
+    "role": "aw",
+    "language": "danish",
+    "morale": 90,
+    "team": "Team Liquid",
+    "stats": {
+      "rifle": 15,
+      "awp": 14,
+      "leadership": 19,
+      "tactics": 20,
+      "flair": 9,
+      "mentality": 18,
+      "teamwork": 19,
+      "workrate": 18,
+      "composure": 15,
+      "aggression": 12,
+      "utilty": 17
+    }
+  },
+  {
+    "ign": "stewie",
+    "salary": 200000,
+    "months_left": 48,
+    "age": 26,
+    "role": "support",
+    "language": "danish",
+    "morale": 90,
+    "team": "Team Liquid",
+    "stats": {
+      "rifle": 15,
+      "awp": 14,
+      "leadership": 19,
+      "tactics": 20,
+      "flair": 9,
+      "mentality": 18,
+      "teamwork": 19,
+      "workrate": 18,
+      "composure": 15,
+      "aggression": 12,
+      "utilty": 17
+    }
+  },
+  {
+    "ign": "grim",
+    "salary": 200000,
+    "months_left": 48,
+    "age": 26,
+    "role": "anchor",
+    "language": "danish",
+    "morale": 90,
+    "team": "Team Liquid",
+    "stats": {
+      "rifle": 15,
+      "awp": 14,
+      "leadership": 19,
+      "tactics": 20,
+      "flair": 9,
+      "mentality": 18,
+      "teamwork": 19,
+      "workrate": 18,
+      "composure": 15,
+      "aggression": 12,
+      "utilty": 17
+    }
+  },
+  {
+    "ign": "naff",
+    "salary": 200000,
+    "months_left": 48,
+    "age": 26,
+    "role": "lurk",
+    "language": "danish",
+    "morale": 90,
+    "team": "Team Liquid",
+    "stats": {
+      "rifle": 15,
+      "awp": 14,
+      "leadership": 19,
+      "tactics": 20,
+      "flair": 9,
+      "mentality": 18,
+      "teamwork": 19,
+      "workrate": 18,
+      "composure": 15,
+      "aggression": 12,
+      "utilty": 17
+    }
+  },
+  {
+    "ign": "Niko",
+    "salary": 200000,
+    "months_left": 48,
+    "age": 24,
+    "role": "igl",
+    "language": "french",
+    "morale": 95,
+    "team": "G2",
+    "stats": {
+      "rifle": 19,
+      "awp": 14,
+      "leadership": 19,
+      "tactics": 18,
+      "flair": 14,
+      "mentality": 18,
+      "teamwork": 16,
+      "workrate": 18,
+      "composure": 19,
+      "aggression": 14,
+      "utilty": 9
+    }
+  },
+  {
+    "ign": "KennyS",
+    "salary": 200000,
+    "months_left": 48,
+    "age": 26,
+    "role": "awper",
+    "language": "french",
+    "morale": 55,
+    "team": "G2",
+    "stats": {
+      "rifle": 15,
+      "awp": 19,
+      "leadership": 8,
+      "tactics": 8,
+      "flair": 15,
+      "mentality": 14,
+      "teamwork": 14,
+      "workrate": 18,
+      "composure": 14,
+      "aggression": 17,
+      "utilty": 10
+    }
+  },
+  {
+    "ign": "JaCKz",
+    "salary": 200000,
+    "months_left": 48,
+    "age": 29,
+    "role": "support",
+    "language": "french",
+    "morale": 84,
+    "team": "G2",
+    "stats": {
+      "rifle": 15,
+      "awp": 7,
+      "leadership": 13,
+      "tactics": 13,
+      "flair": 12,
+      "mentality": 16,
+      "teamwork": 16,
+      "workrate": 15,
+      "composure": 14,
+      "aggression": 10,
+      "utilty": 15
+    }
+  },
+  {
+    "ign": "huNter",
+    "salary": 200000,
+    "months_left": 48,
+    "age": 25,
+    "role": "entry",
+    "language": "french",
+    "morale": 95,
+    "team": "G2",
+    "stats": {
+      "rifle": 17,
+      "awp": 9,
+      "leadership": 16,
+      "tactics": 15,
+      "flair": 14,
+      "mentality": 15,
+      "teamwork": 16,
+      "workrate": 18,
+      "composure": 15,
+      "aggression": 16,
+      "utilty": 6
+    }
+  },
+  {
+    "ign": "AmaNEk",
+    "salary": 200000,
+    "months_left": 48,
+    "age": 26,
+    "role": "support",
+    "language": "french",
+    "morale": 90,
+    "team": "G2",
+    "stats": {
+      "rifle": 15,
+      "awp": 15,
+      "leadership": 13,
+      "tactics": 7,
+      "flair": 10,
+      "mentality": 18,
+      "teamwork": 19,
+      "workrate": 18,
+      "composure": 17,
+      "aggression": 12,
+      "utilty": 17
     }
   }
 ]

@@ -1,72 +1,62 @@
 import { connectToDatabase } from "../../../lib/mongo";
 import ObjectID from "bson-objectid";
-import format from "date-fns/format";
+import { getSession } from "next-auth/react";
 
 export default async function gameover(req, res) {
   const { db } = await connectToDatabase();
+  const session = await getSession({ req });
 
-  const { match, id, completed, opponent_name } = JSON.parse(req.body);
-
-  // console.log(match, id, completed, opponent_name);
+  const { match, id, opponent_name } = JSON.parse(req.body);
 
   try {
-    // Loads save file
-    const save = await db.collection("saves").findOne({
-      _id: ObjectID(id),
-    });
+    if (session.user.email) {
+      // Loads save file
+      const save = await db.collection("saves").findOne({
+        user: session.user.email,
+      });
 
-    // Loads fixtures for given day
-    // const days_fixtures = save.fixtures.filter(function (e) {
-    //   const date = format(e.date, "dd/MM/yyyy");
-    //   return date === format(save.gamestate.current_date, "dd/MM/yyyy");
-    // });
+      const winner =
+        match.a_score < match.b_score
+          ? opponent_name
+          : save.gamestate.manager_team;
 
-    // // Finds fixture played
-    // const filter = days_fixtures.filter(function (e) {
-    //   return e.opponent === opponent_name;
-    // });
+      const loser =
+        match.a_score > match.b_score
+          ? opponent_name
+          : save.gamestate.manager_team;
 
-    // console.log(filter, opponent_name)
-
-    const winner =
-      match.a_score < match.b_score
-        ? opponent_name
-        : save.gamestate.manager_team;
-
-    const loser =
-      match.a_score > match.b_score
-        ? opponent_name
-        : save.gamestate.manager_team;
-
-    const test = await db.collection("saves").updateOne(
-      {
-        _id: ObjectID(id),
-        fixtures: {
-          $elemMatch: {
-            opponent: {
-              $eq: opponent_name,
-            },
-            date: {
-              $eq: save.gamestate.current_date,
+      const test = await db.collection("saves").updateOne(
+        {
+          _id: ObjectID(id),
+          fixtures: {
+            $elemMatch: {
+              opponent: {
+                $eq: opponent_name,
+              },
+              date: {
+                $eq: save.gamestate.current_date,
+              },
             },
           },
         },
-      },
-      {
-        $set: {
-          "fixtures.$.completed": true,
-          "fixtures.$.winner": winner,
-          "fixtures.$.loser": loser,
-          "fixtures.$.m_score": match.a_score,
-          "fixtures.$.o_score": match.b_score,
-        },
-      }
-      // { upsert: true }
-    );
+        {
+          $set: {
+            "fixtures.$.completed": true,
+            "fixtures.$.winner": winner,
+            "fixtures.$.loser": loser,
+            "fixtures.$.m_score": match.a_score,
+            "fixtures.$.o_score": match.b_score,
+          },
+        }
+        // { upsert: true }
+      );
 
-    console.log(test);
-
-    res.status(200).json({ message: "Match over & Data Saved", success: true });
+      res
+        .status(200)
+        .json({ message: "Match over & Data Saved", success: true });
+    } else {
+      res.status(404).json({ error: "You are not logged in" });
+    }
   } catch (error) {
     console.log(error);
     res.status(500).json({ error });

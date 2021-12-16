@@ -1,20 +1,24 @@
 import { connectToDatabase } from "../../../lib/mongo";
-import ObjectID from "bson-objectid";
+import { getSession } from "next-auth/react";
 
 // Gets Fixtures for players team
 export default async function teamInfo(req, res) {
-    const { db } = await connectToDatabase();
-    
-    try {
-        const save = await db.collection('saves').findOne({
-            _id: ObjectID('619d8003d937258a03fb3dc0')
-        })
+  const { db } = await connectToDatabase();
+  const session = await getSession({ req });
 
-        const fixtures = save.fixtures
+  try {
+    if (session.user.email) {
+      const save = await db.collection("saves").findOne({
+        user: session.user.email,
+      });
 
-        res.status(200).json({ success: true, fixtures })
-    } catch (error) {
-        console.log(error);
+      const fixtures = save.fixtures;
+
+      res.status(200).json({ success: true, fixtures });
+    } else {
+      res.status(404).json({ error: "You are not logged in" });
     }
+  } catch (error) {
+    console.log(error);
   }
-  
+}
