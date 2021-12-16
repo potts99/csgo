@@ -294,7 +294,7 @@ export default function Navigation({ children }) {
                   >
                     Next Day
                   </button>
-                  <Link href="/game">
+                  <Link href="/game/match">
                     <button
                       type="button"
                       className={

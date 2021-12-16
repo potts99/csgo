@@ -1,12 +1,11 @@
 import { connectToDatabase } from "../../../lib/mongo";
-import ObjectID from "bson-objectid";
 import { getSession } from "next-auth/react";
 
 export default async function gameover(req, res) {
   const { db } = await connectToDatabase();
   const session = await getSession({ req });
 
-  const { match, id, opponent_name } = JSON.parse(req.body);
+  const { match, opponent_name } = JSON.parse(req.body);
 
   try {
     if (session.user.email) {
@@ -25,9 +24,9 @@ export default async function gameover(req, res) {
           ? opponent_name
           : save.gamestate.manager_team;
 
-      const test = await db.collection("saves").updateOne(
+      await db.collection("saves").updateOne(
         {
-          _id: ObjectID(id),
+          user: session.user.email,
           fixtures: {
             $elemMatch: {
               opponent: {
@@ -48,7 +47,6 @@ export default async function gameover(req, res) {
             "fixtures.$.o_score": match.b_score,
           },
         }
-        // { upsert: true }
       );
 
       res

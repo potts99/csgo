@@ -27,18 +27,32 @@ export default async function matchInfo(req, res) {
       if (fixture.length === 0) {
         res.status(200).json({ no_game: true });
       } else {
-        const player_team = await db.collection("teams").findOne({
-          team_name: state.gamestate.manager_team,
-        });
 
-        const opponent = await db.collection("teams").findOne({
-          team_name: fixture[0].opponent,
-        });
+        let player_team = state.teams.filter(function(team) {
+          return team.team_name === state.gamestate.manager_team
+        })
 
-        res.status(200).json({
+        let opponent = state.teams.filter(function(team) {
+          return team.team_name === 'G2'
+        })
+        
+        const player_team_players = state.players.filter(function(player) {
+          return player.team === state.gamestate.manager_team && player.active === true
+        })
+
+        player_team[0].players = player_team_players
+
+        const opponent_players = state.players.filter(function(player) {
+          return player.team === 'G2' && player.active === true
+        })
+
+        opponent[0].players = opponent_players
+
+
+       res.status(200).json({
           message: "Game started",
-          player_team,
-          opponent,
+          player_team: player_team[0],
+          opponent: opponent[0],
           gameID: state._id,
         });
       }
