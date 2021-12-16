@@ -34,36 +34,31 @@ export default function Navigation({ children }) {
       name: "Home",
       href: "/",
       icon: HomeIcon,
-      current: router.pathname === "/" ? true : false,
+      current: router.pathname === "/game/" ? true : false,
     },
     {
       name: "Inbox",
       href: "/inbox",
       icon: InboxIcon,
-      current: router.pathname === "/inbox" ? true : false,
+      current: router.pathname === "/game/inbox" ? true : false,
     },
     {
       name: "Squad",
       href: "/squad",
       icon: UsersIcon,
-      current: router.pathname === "/squad" ? true : false,
+      current: router.pathname === "/game/squad" ? true : false,
     },
     {
       name: "Calendar",
       href: "/calendar",
       icon: UsersIcon,
-      current: router.pathname === "/calendar" ? true : false,
+      current: router.pathname === "/game/calendar" ? true : false,
     },
-    // { name: "Team Info", href: "#", icon: CalendarIcon, current: false },
-    // { name: "Transfers", href: "#", icon: InboxIcon, current: false },
-    // { name: "Stats", href: "#", icon: ChartBarIcon, current: false },
   ];
 
   React.useEffect(() => {
-    if (data && data.state.fixtures )  {
+    if (data && data.state.fixtures) {
       const t = data.state.fixtures;
-
-      console.log(t)
 
       for (let k = 0; k < t.length; k++) {
         if (
@@ -77,8 +72,8 @@ export default function Navigation({ children }) {
           setMatchDay(false);
         }
       }
-    }  else {
-      return null
+    } else {
+      return null;
     }
   }, [data]);
 
